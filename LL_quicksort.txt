@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// correct implementation of catenate 2 lists. 
+void list_catenate(list_t * l1, list_t * l2)
+{
+	if(l1->head != NULL && l2->head != NULL)
+	{
+		l1->tail->next = l2->head; 
+		l1->tail = l2->tail; 
+		return; 
+	}
+	else if(l1->head == NULL)
+	{
+		l1->head = l2->head; 
+		l1->tail = l2->tail; 
+		return; 
+	}
+	else
+	{
+		return; 
+	}
+}
+
+
+
+void split(list_t * list, list_t * l1, list_t * l2)
+{
+	node_t * pN = list->head->next; 
+	while(pN != NULL)
+	{
+		
+		list->head->next = pN->next; 
+		pN->next = NULL; 
+		if(pN->val <= list->head->val)
+		{
+			list_append(l1,pN); 
+		}
+		else
+		{
+			list_append(l2,pN); 
+		}
+		pN = list->head->next;  
+	}
+
+	list->tail = list->head; 
+	return; 
+}
+
+void QuickSort(list_t * list)
+{
+	// Base case: <=2  elements
+	if(list->head == list->tail) return; 
+
+	// Split into 2 pieces
+	list_t * l1 = listCreate();
+	list_t * l2 = listCreate(); 
+	split(list, l1, l2); 	
+
+	// Sort each piece
+	QuickSort(l1); 
+	QuickSort(l2); 
+
+	// Join pieces together
+	list_catenate(l1,list); 
+	list_catenate(l1,l2); 
+
+	list->head = l1->head; 
+	list->tail = l1->tail; 
+
+	free(l1); 
+	free(l2); 
+
+	return; 
+}

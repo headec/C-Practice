@@ -1,0 +1,68 @@
+
+void printArr(int arr[], int len)
+{
+	for(int i = 0; i< len; i++)
+		printf("%d ", arr[i]); 
+
+	printf("\n"); 
+}
+
+void swap(int arr[], int left, int right)
+{
+	int temp = arr[left]; 
+	arr[left] = arr[right]; 
+	arr[right] = temp; 
+	return; 
+}
+
+int partition(int arr[], int first, int last)
+{
+	int mid = first; 
+	int sweep = first + 1; 
+
+	while(sweep<=last)
+	{
+		if(arr[sweep]>arr[first])
+		{
+			sweep ++; 
+		}
+		else
+		{
+			// swap mid+1 and sweep
+			swap(arr, sweep, mid+1); 
+			mid++; 
+			sweep++; 
+		}
+	}
+	// swap mid and first
+	swap(arr, mid, first); 
+
+	return mid; 
+}
+
+void quickSort(int arr[], int first, int last)
+{
+	// Base case
+	if(last <= first) return; 
+
+	// Split array
+	int mid = partition(arr, first, last); 	
+	
+	printArr(arr,9); 
+	// Recursively
+	quickSort(arr, first, mid-1); 
+	quickSort(arr, mid+1, last); 
+
+	return; 
+}
+
+int main()
+{
+	int arr[9] = {5, 7, 1, 3, 2, 6, 9, 4, 8}; 
+
+	quickSort(arr, 0, sizeof(arr)/sizeof(int)-1); 
+
+	printArr(arr,9); 
+	getchar(); 
+	return 0; 
+}
